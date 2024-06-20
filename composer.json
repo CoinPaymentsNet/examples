@@ -1,0 +1,20 @@
+{
+  "name": "coinpaymentscom/examples",
+  "type": "library",
+  "description": "Set of PHP examples for the CoinPayments.com API.",
+  "homepage": "https://docs.coinpayments.com/",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.2",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^7.8",
+    "endroid/qr-code": "^4.6",
+    "vlucas/phpdotenv": "^5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoinPaymentsApiExamples\\": ["src/"]
+    }
+  }
+}

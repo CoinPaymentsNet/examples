@@ -1,66 +1,25 @@
 <?php
 
-function sendApiRequest(string $method, string $endpoint, array $payload = []): array
-{
-    $clientId     = '_YOUR_CLIENT_ID_HERE_';
-    $clientSecret = '_YOUR_CLIENT_SECRET_HERE_';
+include dirname(__DIR__, 2) . '/vendor/autoload.php';
 
-    $payload = !empty($payload) ? json_encode($payload) : '';
+use CoinPaymentsApiExamples\Helpers\ApiHelper;
+use CoinPaymentsApiExamples\Helpers\EnvHelper;
+use CoinPaymentsApiExamples\Helpers\QrCodeHelper;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
-    $apiUrl          = sprintf('https://api.coinpayments.com%s', $endpoint);
-    $date            = (new DateTimeImmutable())->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s');
-    $signatureString = implode('', [chr(239), chr(187), chr(191), $method, $apiUrl, $clientId, $date, $payload]);
+EnvHelper::loadEnv(dirname(__DIR__, 2));
 
-    $headers = [
-        'Content-Type'             => 'application/json',
-        'X-CoinPayments-Client'    => $clientId,
-        'X-CoinPayments-Timestamp' => $date,
-        'X-CoinPayments-Signature' => base64_encode(hash_hmac('sha256', $signatureString, $clientSecret, true)),
-    ];
 
-    $guzzle  = new GuzzleHttp\Client(['verify' => false]);
-
-    try {
-        $res = $guzzle->request($method, $apiUrl, [
-            'body'    => $payload,
-            'headers' => $headers,
-            'http_errors' => false,
-        ]);
-
-        $body = $res->getBody()->getContents();
-
-        return json_decode($body, 1);
-    } catch (GuzzleHttp\Exception\BadResponseException $e) {
-        return ['error' => $e->getResponse()];
-    }
-}
-
-function generateQRData($currencyId, $currencyName, $address, $amount, $tag = null): string
-{
-    $currencySuffix = current(array_reverse(explode(':', $currencyId)));
-    switch ($currencyName) {
-        case 'Bitcurrency SV':
-            return sprintf("bitcurrency:%s?sv&amount=%s", $address, $amount);
-        case 'Tether USD (Omni)':
-            return sprintf("bitcurrency:%s?amount=%s&req-asset=%s", $address, $amount, $currencyId);
-        case 'BinanceCoin':
-            return sprintf("bnb:%s?sv&amount=%s&req-asset=%s", $address, $amount, $currencyId);
-        case 'Tether USD (ERC20)':
-            return sprintf("ethereum:%s?value=%s&req-asset=%s", $address, $amount, $currencySuffix);
-        case 'Tether USD (TRC20)':
-            return sprintf("tron:%s?value=%s&req-asset=%s", $address, $amount, $currencySuffix);
-        default:
-            $currencyName = str_replace(" ", "", strtolower($currencyName));
-            return sprintf("%s:%s?amount=%s%s", $currencyName, $address, $amount, !empty($tag) ? '&tag=' . $tag : '');
-    }
-}
+$apiHelper = new ApiHelper(EnvHelper::get('CLIENT_ID'), EnvHelper::get('CLIENT_SECRET'));
 
 $currencyId = "5057"; // USD - Note: you should use fiat currency here
 $price = 123.45; // Price in fiat
 $quantity = 1;
 
 $payload = [
-    "clientId" => '_YOUR_CLIENT_ID_HERE_',
+    "clientId" => EnvHelper::get('CLIENT_ID'),
     "invoiceId" => "3432432432",
     "items" => [
         [
@@ -89,7 +48,7 @@ $payload = [
 ];
 
 // Create invoice API call
-$response = sendApiRequest('POST', '/api/v1/merchant/invoices', $payload);
+$response = $apiHelper->sendApiRequest('POST', '/api/v1/merchant/invoices', $payload);
 if (isset($response['error'])) {
     printf("Error: %s\n", $response['error']);
     exit(1);
@@ -134,7 +93,7 @@ $currencyId = "1002"; // i.e. LTCT - for those who have not passed KYC/KYB
 
 $endpoint = sprintf('/api/v1/invoices/%s/payment-currencies/%s', $invoiceId, $currencyId);
 
-$response = sendApiRequest('GET', $endpoint);
+$response = $apiHelper->sendApiRequest('GET', $endpoint);
 
 // Note: you should build your own checkout page and display address, amount, currency and transaction expiration time returned in response
 $address       = $response['addresses']['address'];
@@ -152,12 +111,10 @@ echo sprintf("Transaction will expire at: %s\n", $trxExpiration);
 // Note: You also can generate QR-code for this invoice
 // Here is sample code for this using "endroid/qr-code" library (you are free to use any QR-code generation library of your choice)
 
-use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
+$qrCodeHelper = new QrCodeHelper();
+$qrData = $qrCodeHelper->generateQRData($response['currency']['id'], $response['currency']['name'], $address, $amount);
 
 // Create a new QR code instance
-$qrData = generateQRData($response['currency']['id'], $response['currency']['name'], $address, $amount);
 $qrCode = new QrCode($qrData);
 
 // Set the QR code dimensions
