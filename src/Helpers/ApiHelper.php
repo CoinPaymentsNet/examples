@@ -34,8 +34,13 @@ class ApiHelper
             ]);
 
             $body = $response->getBody()->getContents();
+            if (!empty($body)) {
+                return json_decode($body, true);
+            }
 
-            return json_decode($body, true);
+            $statusCode = $response->getStatusCode();
+
+            return ['result' => $statusCode >= 200 && $statusCode < 300];
         } catch (BadResponseException $e) {
             return ['error' => $e->getResponse()];
         }
