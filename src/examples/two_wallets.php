@@ -29,13 +29,12 @@ $usdCurrency = $apiHelper->sendApiRequest('GET', '/api/v1/currencies/' . $usdCur
 // Create of second wallet
 print "Creating of second wallet..." . PHP_EOL;
 
-//$payload = [
-//    "currencyId" => $currencyId,
-//    "label" => "Test wallet #" . date("YmdHis"),
-//];
-//$response = $apiHelper->sendApiRequest('POST', '/api/v1/merchant/wallets', $payload);
-//$secondWalletId = $response['walletId'];
-$secondWalletId = 'bcc67aa7-ae0a-4d5f-bb4d-67bdc31c9755';
+$payload = [
+    "currencyId" => $ltctCurrencyId,
+    "label" => "Test wallet #" . date("YmdHis"),
+];
+$response = $apiHelper->sendApiRequest('POST', '/api/v1/merchant/wallets', $payload);
+$secondWalletId = $response['walletId'];
 printf("Wallet %s has been created." . PHP_EOL, $secondWalletId);
 print PHP_EOL;
 
