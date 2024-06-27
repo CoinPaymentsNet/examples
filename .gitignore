@@ -1,2 +1,6 @@
 vendor/
 .env
+/.vs
+/dotnet/BuyNowButton/.vs
+/dotnet/BuyNowButton/ConsoleApp1/bin/Debug/net8.0
+/dotnet/BuyNowButton/ConsoleApp1/obj
