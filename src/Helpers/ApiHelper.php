@@ -46,17 +46,22 @@ class ApiHelper
         }
     }
 
+    public function calculateSignature(string $method, string $url, string $payload, string $date): string
+    {
+        $signatureString = implode('', [chr(239), chr(187), chr(191), $method, $url, $this->clientId, $date, $payload]);
+
+        return base64_encode(hash_hmac('sha256', $signatureString, $this->clientSecret, true));
+    }
+
     private function buildHeaders(string $method, string $url, string $payload): array
     {
         $date            = (new \DateTimeImmutable())->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d\TH:i:s');
-        $signatureString = implode('', [chr(239), chr(187), chr(191), $method, $url, $this->clientId, $date, $payload]);
 
         return [
             'Content-Type'             => 'application/json',
             'X-CoinPayments-Client'    => $this->clientId,
             'X-CoinPayments-Timestamp' => $date,
-            'X-CoinPayments-Signature' => base64_encode(hash_hmac('sha256', $signatureString, $this->clientSecret, true)),
+            'X-CoinPayments-Signature' => $this->calculateSignature($method, $url, $payload, $date),
         ];
-
     }
 }
