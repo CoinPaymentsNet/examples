@@ -4,3 +4,6 @@ vendor/
 /dotnet/BuyNowButton/.vs
 /dotnet/BuyNowButton/ConsoleApp1/bin/Debug/net8.0
 /dotnet/BuyNowButton/ConsoleApp1/obj
+/dotnet/Consolidation/.vs
+/dotnet/Consolidation/ConsolidationApp/obj
+/dotnet/Consolidation/ConsolidationApp/bin/Debug/net8.0
