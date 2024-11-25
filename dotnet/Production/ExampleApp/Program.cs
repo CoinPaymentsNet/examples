@@ -4,8 +4,8 @@ using Shared;
 
 var currentClient =new ClientEnvironmentModel()
 {
-    Id= "bb1194edff814fabafb567c12e43df66",
-    Secret= "SCrYiYalS6XvksCfidIOO1YgAnFu+ht1MrxVnSHmUmY="
+    Id= "bb****43df66",
+    Secret= "SC****="
 };
 var prodClient = new ProdApiClient("https://api.coinpayments.com/api/v1", currentClient);
 var invoiceService = new InvoiceService(prodClient);
