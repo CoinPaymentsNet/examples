@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace InvoiceApp.Clients
+namespace ExampleApp.Clients
 {
     public partial class ProdApiClient
     {
@@ -16,8 +16,15 @@ namespace InvoiceApp.Clients
         private JsonSerializerOptions Options;
         private HttpClient HttpClient;
         private ClientEnvironmentModel _currentClient;
-        public ProdApiClient(string apiRootUrl, ClientEnvironmentModel currentClient)
+        /// <summary>
+        /// If only public endpoints will be used, you can use this ctor by sending only the api address.
+        /// </summary>
+        /// <param name="apiRootUrl"></param>
+        /// <exception cref="ArgumentException"></exception>
+        public ProdApiClient(string apiRootUrl)
         {
+            API_URL = apiRootUrl ??
+                      throw new ArgumentException("Production API URL not defined");
             Options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -26,10 +33,16 @@ namespace InvoiceApp.Clients
             {
                 //Timeout = TimeSpan.FromMilliseconds(1)
             };
+        }
+
+        public ProdApiClient(string apiRootUrl, ClientEnvironmentModel currentClient):this(apiRootUrl)
+        {
+           
             _currentClient = currentClient;
             API_URL = apiRootUrl ??
                       throw new ArgumentException("Production API URL not defined");
         }
+        
 
         public async Task<(int StatusCode, string Content)> ExecuteAsync(string url, HttpMethod method,
             object? body = null)

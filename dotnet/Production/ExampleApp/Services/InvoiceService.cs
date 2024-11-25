@@ -1,8 +1,8 @@
-﻿using InvoiceApp.Clients;
+﻿using ExampleApp.Clients;
 using Shared.Models;
 using System.Linq.Expressions;
 
-namespace InvoiceApp.Services
+namespace ExampleApp.Services
 {
     public class InvoiceService(ProdApiClient _prodClient)
     {
