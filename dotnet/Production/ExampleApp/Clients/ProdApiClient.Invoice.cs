@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.Models;
-namespace InvoiceApp.Clients
+namespace ExampleApp.Clients
 {
     public partial class ProdApiClient
     {

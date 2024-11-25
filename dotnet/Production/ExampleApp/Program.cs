@@ -1,5 +1,5 @@
-﻿using InvoiceApp.Clients;
-using InvoiceApp.Services;
+﻿using ExampleApp.Clients;
+using ExampleApp.Services;
 using Shared;
 
 var currentClient =new ClientEnvironmentModel()
