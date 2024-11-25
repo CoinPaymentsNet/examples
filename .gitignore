@@ -5,5 +5,10 @@ vendor/
 /dotnet/BuyNowButton/ConsoleApp1/bin/Debug/net8.0
 /dotnet/BuyNowButton/ConsoleApp1/obj
 /dotnet/Consolidation/.vs
+/dotnet/Consolidation/.idea
 /dotnet/Consolidation/ConsolidationApp/obj
 /dotnet/Consolidation/ConsolidationApp/bin/Debug/net8.0
+/dotnet/Production/.vs
+/dotnet/Production/.idea
+/dotnet/Production/InvoiceApp/obj
+/dotnet/Production/InvoiceApp/bin/Debug/net8.0
