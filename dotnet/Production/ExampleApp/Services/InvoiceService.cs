@@ -21,7 +21,8 @@ namespace InvoiceApp.Services
             var payment = await _prodClient.CreateInvoicePayments(invoiceId.ToString());
             var paymentDetails =
                 await _prodClient.GetInvoicePaymentCurrencyDetails(invoiceId.ToString(), Currencies.LTCT.Id);
-
+            Console.WriteLine($"Awaiting {payment.PaymentCurrencies.FirstOrDefault(x => x.Currency.Id == Currencies.LTCT.Id.ToString()).RemainingAmount.DisplayValue} " +
+                $"LTCT amount on {paymentDetails?.Addresses.Address}");
             var payoutSetting = await _prodClient.GetPayoutDetails(invoiceId);
 
             var invoiceStatusResponse = await _prodClient.GetInvoicePaymentStatus(invoice.Id, Currencies.LTCT.Id, null);
