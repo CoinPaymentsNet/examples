@@ -7,9 +7,9 @@ var cbService = new CallbackService();
 
 var clientId = "bb11****e43df66";
 var secret = "SC*******HmUmY=";
-var expectedSignature = "yuS+GsMZO8KYhX6QCXvS5Mx6ume3h09ZezUCU5BCq9s=";
+var expectedSignature = "BfwN63yBLY+/Gct1GTEhlDz0IhWqw//hho5GYgl1Dtc=";
 var timestampHeader = "2024-09-10T11:08:37";
-var requestUrl = "https://paymentcallback5.upgaming.online/api/CoinPaymentsV2/Callback";
+var requestUrl = "https://some.test.callbackaddress/callback";
 var notificationBody = new NotificationDto(
     Guid.Parse("7d5d7327-b21b-4cd4-9883-9d3a996842b7"),
     "3FVwhH9U2HLWckSaoT8VEfchxVWosHiNba",
