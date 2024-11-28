@@ -1,6 +1,6 @@
 <?php
 
-include dirname(__DIR__, 2) . '/vendor/autoload.php';
+include dirname(__DIR__, 3) . '/vendor/autoload.php';
 
 use CoinPaymentsApiExamples\Helpers\ApiHelper;
 use CoinPaymentsApiExamples\Helpers\EnvHelper;
@@ -9,7 +9,7 @@ use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 
-EnvHelper::loadEnv(dirname(__DIR__, 2));
+EnvHelper::loadEnv(dirname(__DIR__, 3));
 
 
 $apiHelper = new ApiHelper(EnvHelper::get('CLIENT_ID'), EnvHelper::get('CLIENT_SECRET'));
@@ -129,7 +129,7 @@ $qrCode->setMargin(5);
 
 $writer = new PngWriter();
 $result = $writer->write($qrCode);
-$result->saveToFile(__DIR__.'/qrcode.png');
+$result->saveToFile(__DIR__ . '/qrcode.png');
 
 
 // Note: CoinPayments API offers webhook notifications, a powerful feature that allows merchants to seamlessly enable

@@ -1,11 +1,11 @@
 <?php
 
-include dirname(__DIR__, 2) . '/vendor/autoload.php';
+include dirname(__DIR__, 3) . '/vendor/autoload.php';
 
 use CoinPaymentsApiExamples\Helpers\ApiHelper;
 use CoinPaymentsApiExamples\Helpers\EnvHelper;
 
-EnvHelper::loadEnv(dirname(__DIR__, 2));
+EnvHelper::loadEnv(dirname(__DIR__, 3));
 
 $apiHelper = new ApiHelper(EnvHelper::get('CLIENT_ID'), EnvHelper::get('CLIENT_SECRET'));
 
