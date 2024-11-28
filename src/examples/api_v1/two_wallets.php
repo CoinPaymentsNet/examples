@@ -1,10 +1,10 @@
 <?php
-include dirname(__DIR__, 2) . '/vendor/autoload.php';
+include dirname(__DIR__, 3) . '/vendor/autoload.php';
 
 use CoinPaymentsApiExamples\Helpers\ApiHelper;
 use CoinPaymentsApiExamples\Helpers\EnvHelper;
 
-EnvHelper::loadEnv(dirname(__DIR__, 2));
+EnvHelper::loadEnv(dirname(__DIR__, 3));
 
 /**
  * Let's assume that we already have wallet in LTCT with some positive balance greater than $100 (in equivalent).
