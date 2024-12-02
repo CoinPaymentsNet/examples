@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace ExampleApp.Clients
 {
-    public partial class ProdApiClient
+    public  class MerchantWalletService(CoinPaymentsApiClient _client)
     {
 
         public Task<MerchantWallet[]> GetMerchantWallets()
         {
-            return AuthExecuteAsync<MerchantWallet[]>($"{API_URL}/merchant/wallets", HttpMethod.Get, _currentClient.Id, _currentClient.Secret);
+            return _client.AuthExecuteAsync<MerchantWallet[]>($"merchant/wallets", HttpMethod.Get, _client.CurrentClient.Id, _client.CurrentClient.Secret);
         }
 
         public Task<MerchantWallet> GetMerchantWalletById(Guid id)
         {
-            return AuthExecuteAsync<MerchantWallet>($"{API_URL}/merchant/wallets/{id}", HttpMethod.Get, _currentClient.Id, _currentClient.Secret);
+            return _client.AuthExecuteAsync<MerchantWallet>($"merchant/wallets/{id}", HttpMethod.Get, _client.CurrentClient.Id, _client.CurrentClient.Secret);
         }
         public async Task<NewWalletResponse> CreateMerchantWallet(string currencyId, string label, string? url, string? contractAddress, bool hasPermanentAddress, CancellationToken ct = default)
         {
@@ -30,8 +30,8 @@ namespace ExampleApp.Clients
                 ContractAddress = contractAddress,
                 UsePermanentAddresses = hasPermanentAddress,
             };
-            var response = await AuthExecuteAsync<NewWalletResponse>(
-                $"{API_URL}/merchant/wallets", HttpMethod.Post, _currentClient.Id, _currentClient.Secret, request);
+            var response = await _client.AuthExecuteAsync<NewWalletResponse>(
+                $"merchant/wallets", HttpMethod.Post, _client.CurrentClient.Id, _client.CurrentClient.Secret, request);
             return response!;
         }
 
@@ -39,15 +39,15 @@ namespace ExampleApp.Clients
         {
             var request = new CreateWalletAddressRequestDto
             { Label = label, NotificationUrl = notificationUrl, Type = type };
-            var response = await AuthExecuteAsync<CreateWalletAddressResponseDto>(
-                $"{API_URL}/merchant/wallets/{walletId}/addresses", HttpMethod.Post, _currentClient.Id, _currentClient.Secret,
+            var response = await _client.AuthExecuteAsync<CreateWalletAddressResponseDto>(
+                $"merchant/wallets/{walletId}/addresses", HttpMethod.Post, _client.CurrentClient.Id, _client.CurrentClient.Secret,
                 request);
             return response!;
         }
         public async Task<WalletAddressDto[]> GetMerchantWalletAddress(Guid walletId, CancellationToken ct = default)
         {
-            var response = await AuthExecuteAsync<WalletAddressDto[]>(
-                $"{API_URL}/merchant/wallets/{walletId}/addresses", HttpMethod.Get, _currentClient.Id, _currentClient.Secret);
+            var response = await _client.AuthExecuteAsync<WalletAddressDto[]>(
+                $"merchant/wallets/{walletId}/addresses", HttpMethod.Get, _client.CurrentClient.Id, _client.CurrentClient.Secret);
             return response;
         }
 
@@ -63,8 +63,8 @@ namespace ExampleApp.Clients
                 ToContractAddress = toContractAddress,
                 ReceiverPaysFee = receiverPaysFee
             };
-            var response = await AuthExecuteAsync<WalletSpendResponseDto>(
-                $"{API_URL}/merchant/wallets/{fromWalletId}/spend/request", HttpMethod.Post, _currentClient.Id, _currentClient.Secret, request);
+            var response = await _client.AuthExecuteAsync<WalletSpendResponseDto>(
+                $"merchant/wallets/{fromWalletId}/spend/request", HttpMethod.Post, _client.CurrentClient.Id, _client.CurrentClient.Secret, request);
             return response;
         }
 
@@ -74,9 +74,9 @@ namespace ExampleApp.Clients
             {
                 SpendRequestId = spendRequestId
             };
-            var response = await AuthExecuteAsync(
-                $"{API_URL}/merchant/wallets/{fromWalletId}/spend/confirmation", HttpMethod.Post, _currentClient.Id,
-                _currentClient.Secret, request);
+            var response = await _client.AuthExecuteAsync(
+                $"merchant/wallets/{fromWalletId}/spend/confirmation", HttpMethod.Post, _client.CurrentClient.Id,
+                _client.CurrentClient.Secret, request);
         }
     }
 }

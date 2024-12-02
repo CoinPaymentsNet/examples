@@ -1,19 +1,20 @@
-﻿using Shared.Models;
+﻿using ExampleApp.Clients;
+using Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExampleApp.Clients
+namespace ExampleApp.Services
 {
-    public partial class ProdApiClient
+    public class Webhook(CoinPaymentsApiClient _client)
     {
         public async Task<MerchantClientWebhookEndpointsDto> GetMerchantClientWebhooks(CancellationToken ct = default)
         {
-            var url = $"{API_URL}/merchant/clients/{_currentClient.Id}/webhooks";
+            var url = $"merchant/clients/{_client.CurrentClient.Id}/webhooks";
 
-            return await AuthExecuteAsync<MerchantClientWebhookEndpointsDto>(url, HttpMethod.Get, _currentClient.Id, _currentClient.Secret, ct: ct);
+            return await _client.AuthExecuteAsync<MerchantClientWebhookEndpointsDto>(url, HttpMethod.Get, _client.CurrentClient.Id, _client.CurrentClient.Secret, ct: ct);
         }
         public async Task<CreateMerchantClientWebhookResponseDto> CreateMerchantClientWebhook(string notificationUrl, CancellationToken ct = default)
         {
@@ -26,9 +27,9 @@ namespace ExampleApp.Clients
             }
             };
 
-            var url = $"{API_URL}/merchant/clients/{_currentClient.Id}/webhooks";
+            var url = $"merchant/clients/{_client.CurrentClient.Id}/webhooks";
 
-            var response = await AuthExecuteAsync<CreateMerchantClientWebhookResponseDto>(url, HttpMethod.Post, _currentClient.Id, _currentClient.Secret, request, ct);
+            var response = await _client.AuthExecuteAsync<CreateMerchantClientWebhookResponseDto>(url, HttpMethod.Post, _client.CurrentClient.Id, _client.CurrentClient.Secret, request, ct);
             return response;
         }
 
@@ -43,9 +44,9 @@ namespace ExampleApp.Clients
                 Notifications = notifications.ToArray()
             };
 
-            var url = $"{API_URL}/merchant/clients/{_currentClient.Id}/webhooks/{webhookId}";
+            var url = $"merchant/clients/{_client.CurrentClient.Id}/webhooks/{webhookId}";
 
-            await AuthExecuteAsync(url, HttpMethod.Put, _currentClient.Id, _currentClient.Secret, request, ct);
+            await _client.AuthExecuteAsync(url, HttpMethod.Put, _client.CurrentClient.Id, _client.CurrentClient.Secret, request, ct);
         }
     }
 }

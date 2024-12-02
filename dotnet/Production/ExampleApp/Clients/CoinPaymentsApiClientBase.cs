@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace ExampleApp.Clients
 {
-    public partial class ProdApiClient
+    public partial class CoinPaymentsApiClient
     {
         const string CoinPaymentsApiClientHeaderName = "X-CoinPayments-Client";
         const string CoinPaymentsApiSignatureHeaderName = "X-CoinPayments-Signature";
@@ -15,8 +15,8 @@ namespace ExampleApp.Clients
         private string API_URL;
         private JsonSerializerOptions Options;
         private HttpClient HttpClient;
-        private ClientEnvironmentModel _currentClient;
-        public ProdApiClient(string apiRootUrl, ClientEnvironmentModel currentClient)
+        public readonly ClientEnvironmentModel CurrentClient;
+        public CoinPaymentsApiClient(string apiRootUrl, ClientEnvironmentModel currentClient)
         {
             Options = new JsonSerializerOptions
             {
@@ -26,7 +26,7 @@ namespace ExampleApp.Clients
             {
                 //Timeout = TimeSpan.FromMilliseconds(1)
             };
-            _currentClient = currentClient;
+            CurrentClient = currentClient;
             API_URL = apiRootUrl ??
                       throw new ArgumentException("Production API URL not defined");
         }
@@ -34,6 +34,7 @@ namespace ExampleApp.Clients
         public async Task<(int StatusCode, string Content)> ExecuteAsync(string url, HttpMethod method,
             object? body = null)
         {
+            url = $"{API_URL}/{url}";
             try
             {
                 if (!Options.Converters.Any(x => x.GetType() == typeof(JsonStringEnumConverter)))
@@ -66,6 +67,7 @@ namespace ExampleApp.Clients
             string clientId, string clientSecret, object? body = null, CancellationToken ct = default)
         {
             HttpResponseMessage? result = null;
+            url = $"{API_URL}/{url}";
             try
             {
                 if (!Options.Converters.Any(x => x.GetType() == typeof(JsonStringEnumConverter)))
