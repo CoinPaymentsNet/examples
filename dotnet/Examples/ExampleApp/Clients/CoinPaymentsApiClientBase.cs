@@ -38,6 +38,7 @@ namespace ExampleApp.Clients
             API_URL = apiRootUrl ??
                       throw new ArgumentException("Production API URL not defined");
         }
+        
 
         public async Task<(int StatusCode, string Content)> ExecuteAsync(string url, HttpMethod method,
             object? body = null)
