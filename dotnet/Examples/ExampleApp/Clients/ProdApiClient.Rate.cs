@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExampleApp.Clients
 {
-    public partial class ProdApiClient
+    public partial class CoinPaymentsApiClient
     {
         public Task<Paged<RateDto>> GetRates(string from, string to)
         {

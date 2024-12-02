@@ -16,13 +16,8 @@ namespace ExampleApp.Clients
         private JsonSerializerOptions Options;
         private HttpClient HttpClient;
         public readonly ClientEnvironmentModel CurrentClient;
-        public CoinPaymentsApiClient(string apiRootUrl, ClientEnvironmentModel currentClient)
-        /// <summary>
-        /// If only public endpoints will be used, you can use this ctor by sending only the api address.
-        /// </summary>
-        /// <param name="apiRootUrl"></param>
-        /// <exception cref="ArgumentException"></exception>
-        public ProdApiClient(string apiRootUrl)
+        
+        public CoinPaymentsApiClient(string apiRootUrl)
         {
             API_URL = apiRootUrl ??
                       throw new ArgumentException("Production API URL not defined");
@@ -34,17 +29,15 @@ namespace ExampleApp.Clients
             {
                 //Timeout = TimeSpan.FromMilliseconds(1)
             };
-            CurrentClient = currentClient;
         }
 
-        public ProdApiClient(string apiRootUrl, ClientEnvironmentModel currentClient):this(apiRootUrl)
+        public CoinPaymentsApiClient(string apiRootUrl, ClientEnvironmentModel currentClient) : this(apiRootUrl)
         {
 
             CurrentClient = currentClient;
             API_URL = apiRootUrl ??
                       throw new ArgumentException("Production API URL not defined");
         }
-        
 
         public async Task<(int StatusCode, string Content)> ExecuteAsync(string url, HttpMethod method,
             object? body = null)
