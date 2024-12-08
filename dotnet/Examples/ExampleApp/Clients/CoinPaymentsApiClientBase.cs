@@ -34,7 +34,8 @@ namespace ExampleApp.Clients
         public async Task<(int StatusCode, string Content)> ExecuteAsync(string url, HttpMethod method,
             object? body = null)
         {
-            url = $"{API_URL}/{url}";
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var _))
+                url = $"{API_URL}/{url}";
             try
             {
                 if (!Options.Converters.Any(x => x.GetType() == typeof(JsonStringEnumConverter)))
@@ -67,7 +68,8 @@ namespace ExampleApp.Clients
             string clientId, string clientSecret, object? body = null, CancellationToken ct = default)
         {
             HttpResponseMessage? result = null;
-            url = $"{API_URL}/{url}";
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var _))
+                url = $"{API_URL}/{url}";
             try
             {
                 if (!Options.Converters.Any(x => x.GetType() == typeof(JsonStringEnumConverter)))
