@@ -7,17 +7,17 @@ using System.Text.Json.Serialization;
 
 namespace ExampleApp.Clients
 {
-    public partial class CoinPaymentsApiClient
+
+    public class CoinPaymentsApiPublicClient
     {
-        const string CoinPaymentsApiClientHeaderName = "X-CoinPayments-Client";
-        const string CoinPaymentsApiSignatureHeaderName = "X-CoinPayments-Signature";
-        const string CoinPaymentsApiTimestampHeaderName = "X-CoinPayments-Timestamp";
-        private string API_URL;
-        private JsonSerializerOptions Options;
-        private HttpClient HttpClient;
-        public readonly ClientEnvironmentModel CurrentClient;
-        public CoinPaymentsApiClient(string apiRootUrl, ClientEnvironmentModel currentClient)
+        protected JsonSerializerOptions Options;
+        private readonly string API_URL;
+        protected HttpClient HttpClient;
+
+        public CoinPaymentsApiPublicClient(string apiRootUrl)
         {
+            API_URL = apiRootUrl ??
+                      throw new ArgumentException("Production API URL not defined");
             Options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -26,9 +26,12 @@ namespace ExampleApp.Clients
             {
                 //Timeout = TimeSpan.FromMilliseconds(1)
             };
-            CurrentClient = currentClient;
-            API_URL = apiRootUrl ??
-                      throw new ArgumentException("Production API URL not defined");
+
+        }
+        public async Task<T> ExecuteAsync<T>(string url, HttpMethod method, object? body = null)
+        {
+            var result = await ExecuteAsync(url, method, body);
+            return JsonSerializer.Deserialize<T?>(result.Content, Options)!;
         }
 
         public async Task<(int StatusCode, string Content)> ExecuteAsync(string url, HttpMethod method,
@@ -62,6 +65,20 @@ namespace ExampleApp.Clients
                 var ex = new TaskCanceledException($"Task canceled with url {url}", e);
                 throw ex;
             }
+        }
+    }
+
+    public class CoinPaymentsApiClient: CoinPaymentsApiPublicClient
+    {
+        const string CoinPaymentsApiClientHeaderName = "X-CoinPayments-Client";
+        const string CoinPaymentsApiSignatureHeaderName = "X-CoinPayments-Signature";
+        const string CoinPaymentsApiTimestampHeaderName = "X-CoinPayments-Timestamp";
+        private string API_URL;
+        public readonly ClientEnvironmentModel CurrentClient;
+        public CoinPaymentsApiClient(string apiRootUrl, ClientEnvironmentModel currentClient):base(apiRootUrl)
+        {
+            CurrentClient = currentClient;
+            API_URL = apiRootUrl;
         }
 
         public async Task<(int StatusCode, string Content)> AuthExecuteAsync(string url, HttpMethod method,
@@ -108,12 +125,6 @@ namespace ExampleApp.Clients
             object? body = null, CancellationToken ct = default)
         {
             var result = await AuthExecuteAsync(url, method, clientId, clientSecret, body, ct);
-            return JsonSerializer.Deserialize<T?>(result.Content, Options)!;
-        }
-
-        public async Task<T> ExecuteAsync<T>(string url, HttpMethod method, object? body = null)
-        {
-            var result = await ExecuteAsync(url, method, body);
             return JsonSerializer.Deserialize<T?>(result.Content, Options)!;
         }
 

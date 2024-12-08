@@ -1,13 +1,11 @@
 ﻿using ExampleApp.Clients;
 using ExampleApp.ExampleCreator;
-using ExampleApp.Services;
+using ExampleApp.ExampleCreator.V2;
 using Shared;
+using Shared.Models;
 
-var currentClient =new ClientEnvironmentModel()
-{
-    Id= "bb1194edff814fabafb567c12e43df66",
-    Secret= "SCrYiYalS6XvksCfidIOO1YgAnFu+ht1MrxVnSHmUmY="
-};
-var client = new CoinPaymentsApiClient("https://api.coinpayments.com/api/v1", currentClient);
-var exampleCreator = new ExampleCreator(client);
-await exampleCreator.CreateInvoiceInUSD();
+var client = new CoinPaymentsApiPublicClient("https://api.coinpayments.com/api/v2");
+var currency = Currencies.BTC;
+var feeCreator = new BlockChainFeeCreator(client);
+var btcBlockChainFee = await feeCreator.GetBlockchainFeeByGivenCurrency(currency.GetId());
+Console.WriteLine($"Blockchain fee for {currency.Name} => {btcBlockChainFee}");
