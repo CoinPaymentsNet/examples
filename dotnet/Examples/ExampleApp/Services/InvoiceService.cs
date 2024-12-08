@@ -241,7 +241,107 @@ namespace ExampleApp.Clients
 
 
     }
+    public sealed class CreateMerchantInvoiceResponseV2Dto
+    {
+        /// <summary>
+        /// the id of the created invoice
+        /// </summary>
+        public required InvoicesCreatedV2Dto[] Invoices { get; set; }
+    }
 
+    public sealed class InvoicesCreatedV2Dto
+    {
+        /// <summary>
+        /// The id of the created invoice
+        /// </summary>
+        public required string Id { get; set; }
+
+        /// <summary>
+        /// The link to the created invoice
+        /// </summary>
+        public required string Link { get; set; }
+
+        /// <summary>
+        /// The link to the checkout app
+        /// </summary>
+        public required string CheckoutLink { get; set; }
+
+        /// <summary>
+        /// Invoice payment info
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public InvoicePaymentV2Dto? Payment { get; set; }
+
+        /// <summary>
+        /// Invoice hot wallet info
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public InvoicePaymentCurrencyPaymentDetailsV2Dto? HotWallet { get; set; }
+    }
+
+    public sealed class InvoicePaymentCurrencyPaymentDetailsV2Dto
+    {
+        /// <summary>
+        /// the currency for the payment details, to which the amount and addresses are specified to
+        /// </summary>
+        public required CurrencyDto Currency { get; set; }
+
+        /// <summary>
+        /// the amount due to be paid in this currency
+        /// </summary>
+        public required string Amount { get; set; }
+        public required string RemainingAmount { get; set; }
+
+        /// <summary>
+        /// the addresses and URIs for sending payments to the invoice (for crypto currency payments)
+        /// </summary>
+        public required InvoicePaymentCurrencyPaymentAddressesDto? Addresses { get; set; }
+
+        /// <summary>
+        /// the timestamp when the payment expires and new payments will no longer be accepted
+        /// </summary>
+        public required DateTimeOffset Expires { get; set; }
+    }
+
+    public sealed class InvoicePaymentV2Dto
+    {
+        /// <summary>
+        /// the id of the payment
+        /// </summary>
+        public required string PaymentId { get; set; }
+
+        /// <summary>
+        /// the timestamp when the payment expires and new payments will no longer be accepted
+        /// </summary>
+        public required DateTimeOffset Expires { get; set; }
+
+        public required InvoicePaymentCurrencyV2Dto[] PaymentCurrencies { get; set; }
+
+        public required string RefundEmail { get; set; } = null!;
+    }
+
+    public sealed class InvoicePaymentCurrencyV2Dto
+    {
+        /// <summary>
+        /// the currency information in which an invoice can be paid in
+        /// </summary>
+        public required CurrencyDto Currency { get; set; }
+
+        /// <summary>
+        /// flag indicating whether this currency is currently unavailable (e.g. node or services down)
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public bool IsDisabled { get; set; }
+
+        /// <summary>
+        /// the total amount due to pay the remainder of the invoices balance in this currency
+        /// </summary>
+        public required string Amount { get; set; }
+
+        public required string ApproximateNetworkAmount { get; set; }
+
+        public required string RemainingAmount { get; set; }
+    }
     public record CreateMerchantInvoiceResponse(InvoicesCreated[] Invoices);
 
     public record InvoicesCreated(string Id, string Link);
