@@ -41,7 +41,6 @@ namespace ExampleApp.Services
                 writer.Write(requestUrl);
                 writer.Write(clientId);
                 writer.Write(timestampHeader);
-                writer.Flush();
                 writer.Write(body);
                 writer.Flush();
 
