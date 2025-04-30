@@ -405,16 +405,15 @@ namespace ExampleApp.Clients
         /// </summary>
         Weekly = 5
     }
-
     public enum MerchantClientWebhookNotification
     {
-        invoiceCreated,
-        invoicePending,
-        invoicePaid,
-        invoiceCompleted,
-        invoiceCancelled
+        invoiceCreated = 0,
+        invoicePending = 1,
+        invoicePaid = 2,
+        invoiceCompleted = 3,
+        invoiceCancelled = 4,
+        invoiceTimedOut = 5
     }
-
     public record InvoiceMerchantOptions(
         bool ShowAddress,
         bool ShowEmail,
@@ -528,7 +527,6 @@ namespace ExampleApp.Clients
     public class MerchantClientWebhookEndpointsDto : PagedItemsDto<MerchantClientWebhookEndpointDto>
     {
     }
-
     public class MerchantClientWebhookEndpointDto
     {
         /// <summary>
