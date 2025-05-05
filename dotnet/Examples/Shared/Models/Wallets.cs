@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoinPayments.IntegrationTest.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,12 +65,12 @@ namespace Shared.Models
         /// <summary>
         /// the amount of tokens (like ERC20) available for this wallet
         /// </summary>
-        public required TokenDto[] ConfirmedTokens { get; set; }
+        public  TokenDto[] ConfirmedTokens { get; set; }
 
         /// <summary>
         /// the amount of tokens (like ERC20) pending for this wallet
         /// </summary>
-        public required TokenDto[] UnconfirmedTokens { get; set; }
+        public  TokenDto[] UnconfirmedTokens { get; set; }
 
         /// <summary>
         /// flag that determines ability to create multiple addresses for same wallet
@@ -157,6 +158,7 @@ namespace Shared.Models
         /// the id of the currency this wallet holds
         /// </summary>
         /// <example>1235</example>
+        [JsonConverter(typeof(StringToIntConverter))]
         public int CurrencyId { get; set; }
 
         public virtual bool IsMain { get; set; }
@@ -208,12 +210,12 @@ namespace Shared.Models
         /// <summary>
         /// the amount of tokens (like ERC20) available for this wallet
         /// </summary>
-        public required TokenDto[] ConfirmedTokens { get; set; }
+        public  TokenDto[] ConfirmedTokens { get; set; }
 
         /// <summary>
         /// the amount of tokens (like ERC20) pending for this wallet
         /// </summary>
-        public required TokenDto[] UnconfirmedTokens { get; set; }
+        public  TokenDto[] UnconfirmedTokens { get; set; }
 
         /// <summary>
         /// flag that determines ability to create multiple addresses for same wallet
