@@ -59,7 +59,7 @@ var body = new
     }
 };
 
-var result = await MerchantExecuteAsync("https://api.coinpayments.com/api/v1/merchant/invoices/buy-now-button", "POST", clientId, clientSecret, body);
+var result = await MerchantExecuteAsync("https://api.coinpayments.net/api/v1/merchant/invoices/buy-now-button", "POST", clientId, clientSecret, body);
 
 Console.WriteLine(result);
 Console.ReadLine();
