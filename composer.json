@@ -1,8 +1,8 @@
 {
-  "name": "coinpaymentscom/examples",
+  "name": "coinpaymentsnet/examples",
   "type": "library",
-  "description": "Set of PHP examples for the CoinPayments.com API.",
-  "homepage": "https://docs.coinpayments.com/",
+  "description": "Set of PHP examples for the CoinPayments.net API.",
+  "homepage": "https://docs.coinpayments.net/",
   "minimum-stability": "stable",
   "license": "MIT",
   "require": {
