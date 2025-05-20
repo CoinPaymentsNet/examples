@@ -4,7 +4,7 @@ using ExampleApp.Services;
 using Shared;
 using Shared.Models;
 
-var client = new CoinPaymentsApiClient("https://api.coinpayments.com/api/v1");
+var client = new CoinPaymentsApiClient("https://api.coinpayments.net/api/v1");
 
 var rateService = new RateService(client);
 var usdAmount = 30_00;//Must be specified in cents 20_00=> $20
