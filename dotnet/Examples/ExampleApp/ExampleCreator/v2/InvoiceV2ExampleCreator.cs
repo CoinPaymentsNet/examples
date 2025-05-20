@@ -57,7 +57,7 @@ namespace ExampleApp.ExampleCreator.v2
             };
             var newInvoice =
                 await _client.AuthExecuteAsync<CreateMerchantInvoiceResponseV2Dto>(
-                    "https://api.coinpayments.com/api/v2/merchant/invoices",
+                    "https://api.coinpayments.net/api/v2/merchant/invoices",
                     HttpMethod.Post, _client.CurrentClient.Id, _client.CurrentClient.Secret, simpleRequest);
             await Task.Delay(2000);
             var invoice = newInvoice.Invoices.First();
@@ -65,13 +65,13 @@ namespace ExampleApp.ExampleCreator.v2
 
             var request = new { RefundEmail = $"{Random.Shared.Next()}@in.crypto" };
             var payment = await _client.AuthExecuteAsync<InvoicePaymentDto>(
-                $"https://api.coinpayments.com/api/v1/invoices/{invoiceId}/payments", HttpMethod.Post, _client.CurrentClient.Id,
+                $"https://api.coinpayments.net/api/v1/invoices/{invoiceId}/payments", HttpMethod.Post, _client.CurrentClient.Id,
                 _client.CurrentClient.Secret, request);
             await Task.Delay(2000);
 
             var targetCurrencyId = Currencies.LTCT.GetId();
             var paymentDetails = await _client.AuthExecuteAsync<InvoicePaymentCurrencyPaymentDetailsDto>(
-                $"https://api.coinpayments.com/api/v1/invoices/{invoiceId}/payment-currencies/{targetCurrencyId}", HttpMethod.Get,
+                $"https://api.coinpayments.net/api/v1/invoices/{invoiceId}/payment-currencies/{targetCurrencyId}", HttpMethod.Get,
                 _client.CurrentClient.Id, _client.CurrentClient.Secret, null);
             await Task.Delay(2000);
 
@@ -79,19 +79,19 @@ namespace ExampleApp.ExampleCreator.v2
                 $"LTCT amount on {paymentDetails?.Addresses.Address}");
 
             var payoutSetting = await _client.AuthExecuteAsync<InvoicePayoutsDetailsDto>(
-                $"https://api.coinpayments.com/api/v2/merchant/invoices/{invoiceId}/payouts", HttpMethod.Get, _client.CurrentClient.Id,
+                $"https://api.coinpayments.net/api/v2/merchant/invoices/{invoiceId}/payouts", HttpMethod.Get, _client.CurrentClient.Id,
                 _client.CurrentClient.Secret, null);
             await Task.Delay(2000);
 
             var invoiceStatusResponse = await _client.AuthExecuteAsync<InvoiceStatusDtoResponseDto>(
-                $"https://api.coinpayments.com/api/v1/invoices/{invoiceId}/payment-currencies/{targetCurrencyId}/status", HttpMethod.Get, _client.CurrentClient.Id,
+                $"https://api.coinpayments.net/api/v1/invoices/{invoiceId}/payment-currencies/{targetCurrencyId}/status", HttpMethod.Get, _client.CurrentClient.Id,
                 _client.CurrentClient.Secret, null);
 
         }
 
         private async Task<MerchantClientWebhookEndpointsDto> GetMerchantClientWebhooks(CancellationToken ct = default)
         {
-            var url = $"https://api.coinpayments.com/api/v1/merchant/clients/{_client.CurrentClient.Id}/webhooks";
+            var url = $"https://api.coinpayments.net/api/v1/merchant/clients/{_client.CurrentClient.Id}/webhooks";
 
             return await _client.AuthExecuteAsync<MerchantClientWebhookEndpointsDto>(url, HttpMethod.Get, _client.CurrentClient.Id, _client.CurrentClient.Secret, ct: ct);
         }
@@ -106,7 +106,7 @@ namespace ExampleApp.ExampleCreator.v2
             }
             };
 
-            var url = $"https://api.coinpayments.com/api/v1/merchant/clients/{_client.CurrentClient.Id}/webhooks";
+            var url = $"https://api.coinpayments.net/api/v1/merchant/clients/{_client.CurrentClient.Id}/webhooks";
 
             var response = await _client.AuthExecuteAsync<CreateMerchantClientWebhookResponseDto>(url, HttpMethod.Post, _client.CurrentClient.Id, _client.CurrentClient.Secret, request, ct);
             return response;
