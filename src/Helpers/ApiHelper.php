@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\BadResponseException;
 
 class ApiHelper
 {
-    const API_URL = 'https://api.coinpayments.com';
+    const API_URL = 'https://api.coinpayments.net';
 
     /** @var string */
     private $clientId;
