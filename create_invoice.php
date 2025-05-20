@@ -7,7 +7,7 @@ function sendApiRequest(string $method, string $endpoint, array $payload = []): 
 
     $payload = !empty($payload) ? json_encode($payload) : '';
 
-    $apiUrl          = sprintf('https://api.coinpayments.com%s', $endpoint);
+    $apiUrl          = sprintf('https://api.coinpayments.net%s', $endpoint);
     $date            = (new DateTimeImmutable())->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s');
     $signatureString = implode('', [chr(239), chr(187), chr(191), $method, $apiUrl, $clientId, $date, $payload]);
 
