@@ -17,7 +17,7 @@ $protocol = (empty($_SERVER['HTTPS']) ? 'http' : 'https');
 $currentUrl = sprintf("%s://%s%s", $protocol, $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI']);
 // another way:
 // Get list of all webhooks for particular pair of "Client ID" and "Client Secret" using this API endpoint
-// https://docs.coinpayments.com/#operation/getMerchantWebhooks
+// https://docs.coinpayments.net/#operation/getMerchantWebhooks
 // It will return JSON with list of all webhooks
 // URL can be detected by using of type returned in webhook payload (i.e. "invoicePaid") and
 // notifications assigned for particular webhook from the list

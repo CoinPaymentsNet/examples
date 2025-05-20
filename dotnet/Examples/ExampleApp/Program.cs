@@ -4,7 +4,7 @@ using ExampleApp.ExampleCreator.V2;
 using Shared;
 using Shared.Models;
 
-var client = new CoinPaymentsApiPublicClient("https://api.coinpayments.com/api/v2");
+var client = new CoinPaymentsApiPublicClient("https://api.coinpayments.net/api/v2");
 var currency = Currencies.BTC;
 var feeCreator = new BlockChainFeeCreator(client);
 var btcBlockChainFee = await feeCreator.GetBlockchainFeeByGivenCurrency(currency.GetId());
