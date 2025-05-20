@@ -8,10 +8,10 @@ var currentUser = new ClientEnvironmentModel()
     Password = "",// cp**********82
     Id = "", // feda5ae***********7193226
     Secret = "", //F+mHut20m**************uo3wBPyJQX7/+VlKLA= 
-    Environment = "STAGING",
+    Environment = "PRODUCTION",
     ToUseEndpoints = new() { 
-        ORION_API_URL = "https://api-staging.coinpaymints.com", 
-        ENVIRONMENT_NAME = "STAGING" }
+        ORION_API_URL = "https://api.coinpayments.net", 
+        ENVIRONMENT_NAME = "PRODUCTION" }
 };
 
 var consolidator = new WalletConsolidator(currentUser);
